@@ -213,6 +213,74 @@ def pengeluaran():
             append_data(j, "jurnal.csv", username)
         st.success("✅ Pengeluaran berhasil disimpan.")
 
+# ---------------- Fungsi Hapus Transaksi ----------------
+
+def hapus_transaksi(transaksi_type, index_to_delete, username):
+    if transaksi_type == "pemasukan":
+        df = load_data("pemasukan.csv", username)
+    elif transaksi_type == "pengeluaran":
+        df = load_data("pengeluaran.csv", username)
+    else:
+        return False
+    
+    if index_to_delete in df.index:
+        transaksi = df.loc[index_to_delete]
+        df = df.drop(index_to_delete).reset_index(drop=True)
+        save_data(df, f"{transaksi_type}.csv", username)
+        
+        jurnal_df = load_data("jurnal.csv", username)
+        
+        if transaksi_type == "pemasukan":
+            if transaksi['Metode'] == "Pelunasan Piutang":
+                jurnal_pembalikan = buat_jurnal(
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Piutang Dagang",
+                    "Kas",
+                    transaksi['Jumlah'],
+                    f"Pembatalan: {transaksi['Keterangan']}"
+                )
+            else:
+                akun_debit = {
+                    "Tunai": "Kas",
+                    "Transfer": "Bank",
+                    "Piutang": "Piutang Dagang"
+                }[transaksi['Metode']]
+                jurnal_pembalikan = buat_jurnal(
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Pendapatan",
+                    akun_debit,
+                    transaksi['Jumlah'],
+                    f"Pembatalan: {transaksi['Keterangan']}"
+                )
+        else:
+            if transaksi['Metode'] == "Pelunasan Utang":
+                jurnal_pembalikan = buat_jurnal(
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Kas",
+                    "Utang Dagang",
+                    transaksi['Jumlah'],
+                    f"Pembatalan: {transaksi['Keterangan']}"
+                )
+            else:
+                akun_kredit = {
+                    "Tunai": "Kas",
+                    "Transfer": "Bank",
+                    "Utang": "Utang Dagang"
+                }[transaksi['Metode']]
+                jurnal_pembalikan = buat_jurnal(
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    akun_kredit,
+                    transaksi['Sub Kategori'],
+                    transaksi['Jumlah'],
+                    f"Pembatalan: {transaksi['Keterangan']}"
+                )
+        
+        for j in jurnal_pembalikan:
+            append_data(j, "jurnal.csv", username)
+        
+        return True
+    return False
+
 # ---------------- Fungsi Laporan ----------------
 
 def laporan():
