@@ -126,9 +126,9 @@ def login_register():
 # ---------------- Data Kategori ----------------
 
 kategori_pengeluaran = {
-    "Bibit": ["Intani", "Inpari", "Ciherang", "32"],
-    "Pupuk": ["Urea", "NPK", "Organik", "Ponska"],
-    "Pestisida": ["Debestan", "Ronsa", "Refaton", "Ema", "Plenum"],
+    "Bibit": ["Intani", "Inpari", "Ciherang"],
+    "Pupuk": ["Urea", "NPK", "Organik"],
+    "Pestisida": ["Furadan", "BPMC", "Dursban"],
     "Alat Tani": ["Sabit", "Cangkul", "Karung"],
     "Tenaga Kerja": ["Upah Harian", "Borongan"],
     "Lainnya": ["Lain-lain"]
