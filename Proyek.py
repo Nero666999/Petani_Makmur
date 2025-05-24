@@ -126,9 +126,9 @@ def login_register():
 # ---------------- Data Kategori ----------------
 
 kategori_pengeluaran = {
-    "Bibit": ["Intani", "Inpari", "Ciherang"],
-    "Pupuk": ["Urea", "NPK", "Organik"],
-    "Pestisida": ["Furadan", "BPMC", "Dursban"],
+    "Bibit": ["Intani", "Inpari", "Ciherang", "32"],
+    "Pupuk": ["Urea", "NPK", "Organik", "Ponska"],
+    "Pestisida": ["Debestan", "Ronsa", "Refaton", "Ema", "Plenum"],
     "Alat Tani": ["Sabit", "Cangkul", "Karung"],
     "Tenaga Kerja": ["Upah Harian", "Borongan"],
     "Lainnya": ["Lain-lain"]
@@ -394,5 +394,5 @@ def main():
         st.session_state['username'] = ""
         st.rerun()
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
